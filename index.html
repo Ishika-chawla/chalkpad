@@ -222,8 +222,10 @@ th,td{
 <div id="login" class="screen active">
   <div class="login-box">
     <h2 style="color:#e53935">Student Login</h2>
-    <input type="text" placeholder="Student ID">
-    <input type="password" placeholder="Password">
+
+    <input type="text" id="studentId" placeholder="Student ID">
+    <input type="password" id="password" placeholder="Password">
+
     <button onclick="login()">Login</button>
   </div>
 </div>
@@ -466,12 +468,25 @@ th,td{
 
 <script>
 function login(){
-  document.getElementById("login").style.display="none";
-  document.getElementById("headerTitle").style.display="block";
-  document.getElementById("bottomNav").style.display="flex";
-  showScreen("profile");
-}
 
+  var id = document.getElementById("studentId").value;
+  var pass = document.getElementById("password").value;
+
+  if(id === "2410990359" && pass === "Ishika_chawla1209"){
+
+      // Hide login screen
+      document.getElementById("login").style.display="none";
+
+      // Show app content
+      document.getElementById("headerTitle").style.display="block";
+      document.getElementById("bottomNav").style.display="flex";
+
+      showScreen("profile");
+
+  } else {
+      alert("Invalid Student ID or Password ❌");
+  }
+}
 function logout(){location.reload();}
 
 function navigate(id,el){
@@ -530,4 +545,5 @@ function selectSession(el){
 </body>
 
 </html>
+
 
