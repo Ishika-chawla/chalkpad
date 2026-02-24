@@ -255,6 +255,18 @@ th,td{
 
   </div>
 </div>
+  <!-- RESET PASSWORD -->
+<div id="reset" class="screen" style="display:none;">
+  <div class="login-box">
+    <h2 style="color:#e53935">Reset Password</h2>
+
+    <input type="text" id="resetId" placeholder="Enter Student ID">
+
+    <button onclick="resetPassword()">Get Password</button>
+
+    <p class="forgot" onclick="goBack()">Back to Login</p>
+  </div>
+</div>
 
 <!-- HEADER -->
 <div class="header" id="headerTitle" style="display:none;">Profile</div>
@@ -513,6 +525,15 @@ function login(){
       alert("Invalid Student ID or Password ❌");
   }
 }
+  function resetPassword(){
+  var id = document.getElementById("resetId").value;
+
+  if(id === "2410990359"){
+      alert("Your password is: Ishika_chawla1209");
+  } else {
+      alert("Student ID not found ❌");
+  }
+}
 function logout(){location.reload();}
 
 function navigate(id,el){
@@ -571,6 +592,7 @@ function selectSession(el){
 </body>
 
 </html>
+
 
 
 
