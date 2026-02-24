@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student App</title>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Roboto, sans-serif;}
+
+body{background:#f5f5f5;}
+
+.app{
+  max-width:420px;
+  margin:auto;
+  background:white;
+  min-height:100vh;
+  position:relative;
+  overflow:hidden;
+}
+
+/* HEADER */
+.header{
+  background:#e53935;
+  color:white;
+  padding:16px;
+  text-align:center;
+  font-size:18px;
+  font-weight:500;
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+
+/* SCREENS */
+.screen{
+  display:none;
+  padding:16px;
+  padding-bottom:90px;
+}
+
+.active{display:block;}
+
+/* LOGIN */
+.login-box{
+  padding:40px 20px;
+  text-align:center;
+}
+
+.login-box input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border:1px solid #ddd;
+  border-radius:4px;
+}
+
+.login-box button{
+  width:100%;
+  padding:12px;
+  background:#e53935;
+  border:none;
+  color:white;
+  font-size:16px;
+  border-radius:4px;
+}
+
+/* PROFILE */
+.profile{
+  text-align:center;
+  padding:20px;
+  background:#f0f0f0;
+}
+
+.profile img{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  margin-bottom:10px;
+}
+
+.card{
+  background:white;
+  margin-top:15px;
+  padding:15px;
+  border-radius:8px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.menu-item{
+  padding:15px 0;
+  border-bottom:1px solid #eee;
+  display:flex;
+  justify-content:space-between;
+  cursor:pointer;
+}
+
+/* FORM */
+.form-input{
+  width:100%;
+  padding:10px;
+  margin:8px 0 15px 0;
+  border:1px solid #ccc;
+  border-radius:4px;
+}
+
+.pay-btn{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  background:#e53935;
+  border:none;
+  color:white;
+  font-size:15px;
+  border-radius:4px;
+  cursor:pointer;
+}
+
+/* SESSION */
+.session-item{
+  padding:15px;
+  border-bottom:1px solid #ddd;
+  position:relative;
+  cursor:pointer;
+}
+
+.session-item .check{
+  color:green;
+  position:absolute;
+  right:15px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+/* TABLE */
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+}
+
+th,td{
+  border:1px solid #ddd;
+  padding:6px;
+  text-align:center;
+}
+
+/* FLOATING BUTTON */
+.fab{
+  position:fixed;
+  bottom:80px;
+  right:20px;
+  background:#e53935;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:28px;
+  box-shadow:0 3px 6px rgba(0,0,0,.3);
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  max-width:420px;
+  display:flex;
+  background:white;
+  border-top:1px solid #ddd;
+}
+
+.nav-item{
+  flex:1;
+  text-align:center;
+  padding:8px 0;
+  font-size:12px;
+  color:#555;
+  cursor:pointer;
+}
+
+.nav-item i{
+  display:block;
+  font-size:22px;
+}
+
+.nav-item.active{
+  color:#e53935;
+}
+.no-record{
+  text-align:center;
+  padding:40px 0;
+  color:#777;
+}
+
+.no-record i{
+  font-size:50px;
+  color:#bbb;
+}
+
+.no-record p{
+  margin-top:10px;
+  font-size:16px;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<!-- LOGIN -->
+<div id="login" class="screen active">
+  <div class="login-box">
+    <h2 style="color:#e53935">Student Login</h2>
+    <input type="text" placeholder="Student ID">
+    <input type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header" id="headerTitle" style="display:none;">Profile</div>
+
+<!-- PROFILE -->
+<div id="profile" class="screen">
+  <div class="profile">
+    <img src="ishika.png">
+   <h3>ISHIKA CHAWLA</h3>
+   <p>Roll. No: 2410990359</p>
+    <p class="branch">2024-BE-CSE-4 SEM 4 SEM</p>
+  </div>
+
+  <div class="card">
+    <div class="menu-item" onclick="showScreen('attendance')">Attendance <span>></span></div>
+    <div class="menu-item" onclick="showScreen('fee')">Fee <span>></span></div>
+    <div class="menu-item" onclick="showScreen('session')">Session <span>></span></div>
+    <div class="menu-item" onclick="logout()">Logout</div>
+  </div>
+</div>
+
+<!-- ATTENDANCE -->
+<div id="attendance" class="screen">
+  <div class="card" style="overflow-x:auto;">
+    <table>
+      <tr>
+        <th>#</th>
+        <th>Subject Code</th>
+        <th>Subject Name</th>
+        <th>Teacher</th>
+        <th>Date</th>
+        <th>Delivered</th>
+        <th>Attended</th>
+        <th>DL</th>
+        <th>ML</th>
+        <th>%</th>
+      </tr>
+
+      <tr>
+        <td>1</td>
+        <td>24CSE0212</td>
+        <td>Data Structures using OOP-II</td>
+        <td>Dinesh Vij</td>
+        <td>20-01-2026<br>23-02-2026</td>
+        <td>50</td>
+        <td>44</td>
+        <td>0</td>
+        <td>0</td>
+        <td>88%</td>
+      </tr>
+
+      <tr>
+        <td>2</td>
+        <td>24CSE0213</td>
+        <td>Linux Administration</td>
+        <td>Dr. Neha Sharma</td>
+        <td>20-01-2026<br>23-02-2026</td>
+        <td>30</td>
+        <td>28</td>
+        <td>0</td>
+        <td>0</td>
+        <td>93.33%</td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td>24CSE0214</td>
+        <td>Backend Engineering-I</td>
+        <td>Amanpreet Kaur</td>
+        <td>22-01-2026<br>20-02-2026</td>
+        <td>20</td>
+        <td>20</td>
+        <td>0</td>
+        <td>0</td>
+        <td>100%</td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td>24CSE0215</td>
+        <td>Computer Networks</td>
+        <td>Inderpreet Kaur</td>
+        <td>20-01-2026<br>23-02-2026</td>
+        <td>15</td>
+        <td>15</td>
+        <td>0</td>
+        <td>0</td>
+        <td>100%</td>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td>24ECE0202</td>
+        <td>Embedded Systems and IoT</td>
+        <td>Jyoti</td>
+        <td>20-01-2026<br>23-02-2026</td>
+        <td>25</td>
+        <td>24</td>
+        <td>0</td>
+        <td>0</td>
+        <td>96%</td>
+      </tr>
+
+    </table>
+  </div>
+</div>
+
+<!-- FEE -->
+<div id="fee" class="screen">
+  <div class="card">
+    <label><input type="checkbox" onchange="calcFee()"> Library Fine ₹74</label>
+    <p style="margin-top:10px;">Total: ₹ <span id="total">0</span></p>
+    <button class="pay-btn" onclick="payNow()">Pay Now</button>
+  </div>
+</div>
+
+<!-- SESSION -->
+<div id="session" class="screen">
+
+  <div class="session-list">
+
+    <div class="session-item" onclick="selectSession(this)">
+      Jul-Dec 2022
+    </div>
+
+    <div class="session-item" onclick="selectSession(this)">
+      Jan-Jun 2023
+    </div>
+
+    <div class="session-item" onclick="selectSession(this)">
+      Jul-Dec 2023
+    </div>
+
+    <div class="session-item" onclick="selectSession(this)">
+      Jan-Jun 2024
+    </div>
+
+    <div class="session-item" onclick="selectSession(this)">
+      Jul-Dec 2024
+    </div>
+
+    <div class="session-item" onclick="selectSession(this)">
+      Jan-Jun 2025
+    </div>
+
+    <div class="session-item" onclick="selectSession(this)">
+      Jul-Dec 2025
+    </div>
+
+    <div class="session-item selected" onclick="selectSession(this)">
+      Jan-Jun 2026
+      <span class="material-icons check">check_circle</span>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MESSAGES SECTION -->
+<div id="messages" class="screen">
+
+  <h2>Staff Conversations</h2>
+
+  <div class="no-record">
+    <i class="material-icons">chat_bubble_outline</i>
+    <p>No Record Found</p>
+  </div>
+
+</div>
+
+<!-- CIRCULARS SECTION -->
+<div id="circulars" class="screen">
+
+  <h2>79 Circulars</h2>
+
+  <div class="no-record">
+    <i class="material-icons">description</i>
+    <p>No Record Found</p>
+  </div>
+
+</div>
+
+<!-- APPLY LEAVE -->
+<div id="leaveForm" class="screen">
+  <div class="card">
+    <h3>Apply Duty/Medical Leave</h3>
+    <select class="form-input"><option>Duty Leave</option></select>
+    <input class="form-input" placeholder="Event Name">
+    <input type="date" class="form-input">
+    <input type="date" class="form-input">
+    <button class="pay-btn" onclick="applyLeave()">Apply Leave</button>
+  </div>
+</div>
+
+<!-- APPLY GATEPASS -->
+<div id="gatepassForm" class="screen">
+  <div class="card">
+    <h3>Apply Gatepass</h3>
+    <input class="form-input" value="ISHIKA CHAWLA" readonly>
+    <input type="date" class="form-input">
+    <input type="time" class="form-input">
+    <textarea class="form-input"></textarea>
+    <button class="pay-btn" onclick="applyGatepass()">Apply Gatepass</button>
+  </div>
+</div>
+
+<!-- MENU -->
+<div id="menu" class="screen">
+  <div class="card">
+    <div class="menu-item" onclick="noRecord()">Circulars</div>
+    <div class="menu-item" onclick="showScreen('leaveForm')">Apply Duty/Medical Leave</div>
+    <div class="menu-item" onclick="showScreen('gatepassForm')">Apply Gatepass</div>
+    <div class="menu-item" onclick="noRecord()">My Greetings</div>
+  </div>
+</div>
+
+<!-- FLOAT BUTTON -->
+<div class="fab material-icons" onclick="alert('Compose')">add</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav" id="bottomNav" style="display:none;">
+  <div class="nav-item active" onclick="navigate('profile',this)">
+    <i class="material-icons">home</i>Home
+  </div>
+  <div class="nav-item" onclick="navigate('messages',this)">
+    <i class="material-icons">chat</i>Messages
+  </div>
+  <div class="nav-item" onclick="navigate('notifications',this)">
+    <i class="material-icons">notifications</i>Alerts
+  </div>
+  <div class="nav-item" onclick="navigate('menu',this)">
+    <i class="material-icons">menu</i>Menu
+  </div>
+</div>
+
+</div>
+
+<script>
+function login(){
+  document.getElementById("login").style.display="none";
+  document.getElementById("headerTitle").style.display="block";
+  document.getElementById("bottomNav").style.display="flex";
+  showScreen("profile");
+}
+
+function logout(){location.reload();}
+
+function navigate(id,el){
+  showScreen(id);
+  document.querySelectorAll(".nav-item").forEach(n=>n.classList.remove("active"));
+  el.classList.add("active");
+}
+
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.getElementById("headerTitle").innerText=id.charAt(0).toUpperCase()+id.slice(1);
+}
+
+function calcFee(){
+  let c=document.querySelector("input[type=checkbox]");
+  document.getElementById("total").innerText=c.checked?74:0;
+}
+
+function payNow(){
+  let amount=document.getElementById("total").innerText;
+  if(amount==0) alert("No pending fee");
+  else{
+    alert("Payment of ₹"+amount+" Successful!");
+    document.getElementById("total").innerText=0;
+    document.querySelector("input[type=checkbox]").checked=false;
+  }
+}
+
+function applyLeave(){
+  alert("Duty Leave Applied Successfully!");
+  showScreen("menu");
+}
+
+function applyGatepass(){
+  alert("Gatepass Applied Successfully!");
+  showScreen("menu");
+}
+
+function noRecord(){
+  alert("No Record Found");
+}
+
+function selectSession(el){
+  document.querySelectorAll(".session-item").forEach(i=>{
+    let icon=i.querySelector(".check");
+    if(icon) icon.remove();
+  });
+  let check=document.createElement("span");
+  check.className="material-icons check";
+  check.innerText="check_circle";
+  el.appendChild(check);
+}
+</script>
+
+</body>
+</html>
